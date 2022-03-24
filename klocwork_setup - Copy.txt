@@ -1,0 +1,42 @@
+
+Pre requisits:
+
+	1. Make sure to have a project created from admin of klockworks in my case DAU_GLOBAL
+	2. My credentials username: msyed2, password: Masthan549@
+
+Klocwork Setup:
+
+1. klocwork server installation https://klocwork-v19.<company_name>.hub/portal/downloads/kw-server-installer.19.2.0.47.linux64.sh
+
+2. klocwork command installation https://klocwork-v19.<company_name>.hub/portal/downloads/kw-cmd-installer.linux64.sh
+
+3. Download above packages and run as noraml user(not root/super user)
+
+''' Ignore this step: 4. klocwork server details: klocwork-v19.<company_name>.hub port 9443 license host engineering.triad1.<company_name>.hub port 27500 (include this information during installation)'''
+
+5. create directories root_kw and root_cmd and export this path to /etc/environment file "/home/dev/Documents/root_cmd/bin:/home/dev/Documents/root_kw/bin:" and source it.
+
+5. Update /etc/hosts with IP address and host name
+   Example:
+	10.243.161.121 klocwork-v19.<company_name>.hub
+	10.243.160.63 engineering.triad1.<company_name>.hub
+
+point to project dir where we have make file and execute following (if any of rules not to be verified, then uncheck those options in site and run step 6 to 11)
+
+6. Run "Execute kwdeploy install --url https://klocwork-v19.<company_name>.hub:443/" -> dwnloads klockworks to local
+
+7. Run "Execute kwdeploy sync --url https://klocwork-v19.<company_name>.hub:443/" -> Keeps the klockwork site DB and local in sync
+
+8. Run "kwinject make releae -o kwinject.out" -> Build the application
+
+9. Run "kwcheck create --license-host engineering.triad1.<company_name>.hub --license-port 27500 -b kwinject.out --url https://klocwork-v19.<company_name>.hub:443/DAU_GLOBAL"
+
+10. Run "kwbuildproject --url https://klocwork-v19.<company_name>.hub:443/DAU_GLOBAL -o DAU5.0 kwinject.out" -> Source code analysis files will be be genarated in same. 
+
+11. Run "kwadmin --url https://klocwork-v19.<company_name>.hub:443/ load DAU_GLOBAL DAU5.0" -> will upload analysis files into klockwork site.
+
+'''
+9. Ignore this step: Export analysis report to klocwork "kwadmin --url https://klocwork-v19.<company_name>.hub:443/ load DAU DAU4.2"
+	Syntax: Export analysis report to klocwork "kwadmin --url https://klocwork-v19.<company_name>.hub:443/ load <Prject name in klockwork> <project name>" '''
+
+12. Reports needs to be uploaded into SCORE
